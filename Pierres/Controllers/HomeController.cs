@@ -1,31 +1,34 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Pierres.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
-namespace Pierres.Controllers;
-
-public class HomeController : Controller
+namespace Pierres.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
+  public class HomeController : Controller
+  {
+    private readonly PierresContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(UserManager<ApplicationUser> userManager, PierresContext db)
     {
-        _logger = logger;
+      _db = db;
+      _userManager = userManager;
     }
 
-    public IActionResult Index()
+    public ActionResult Index()
     {
-        return View();
-    }
+      Dictionary<string, object[]> model = new Dictionary<string, object[]>();
+      Treat[] treats = _db.Treats.ToArray();
+      Flavor[] flavors = _db.Flavors.ToArray();
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+      model.Add("treats", treats);
+      model.Add("flavors", flavors);
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+      return View(model);
     }
+  }
 }

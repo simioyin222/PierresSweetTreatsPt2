@@ -1,0 +1,53 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Pierres.ViewModels;
+@model RegisterViewModel;
+
+<div class="subheader bg">
+  <h4>Account Management</h4>
+</div>
+<br/>
+
+<div class="container col-7">
+  @using (Html.BeginForm())
+  {
+  <div class="card">
+    <div class="account-header card-header">
+      <h5>Register New User</h5>
+    </div>
+    <div class="card-body row">
+      <div class="col">
+        <h5>Enter account details:</h5>
+        @Html.LabelFor(user => user.Email)
+        <br/>
+        @Html.TextBoxFor(user => user.Email)
+        <br/>
+        @Html.LabelFor(user => user.Password)
+        <br/>
+        @Html.EditorFor(user => user.Password)
+        <br/>
+        @Html.LabelFor(user => user.ConfirmPassword)
+        <br/>
+        @Html.EditorFor(user => user.ConfirmPassword)
+        <br/>
+        <br/>
+      </div>
+      <div class="col">
+        @if(!ViewData.ModelState.IsValid)
+        {
+          @Html.ValidationSummary("Please fix the following error(s):", new { @class = "text-danger" })
+        }
+      </div>
+    </div>
+    <div class="register-footer card-footer">
+      <input type="submit" value="Register" class="register-btn btn btn-primary" />
+      <br/>
+      @Html.ActionLink("Back", "Index")
+      @Html.ActionLink("Have an Account? Log In", "Login")
+    </div>
+  </div>
+  }
+  <br/>
+</div>
